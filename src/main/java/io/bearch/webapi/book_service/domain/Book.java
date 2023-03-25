@@ -1,5 +1,6 @@
 package io.bearch.webapi.book_service.domain;
 
+import com.opencsv.bean.CsvDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,6 +28,7 @@ public class Book extends AbstractPersistable<UUID> {
     @Column(nullable = false)
     private String publisher;
 
+    @CsvDate("yyyy-MM-dd")
     @Column(name = "publication_date", nullable = false)
     private LocalDate publicationDate;
 
@@ -34,7 +36,7 @@ public class Book extends AbstractPersistable<UUID> {
     private String genre;
 
     @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'N/A'")
-    private String isbn; //ISBN did not exist prior to 1970
+    private String isbn;
 
     @Column(nullable = false, columnDefinition = "DOUBLE DEFAULT 0")
     private Double price;
