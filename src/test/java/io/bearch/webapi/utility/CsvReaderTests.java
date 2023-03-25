@@ -22,6 +22,7 @@ public class CsvReaderTests {
     void shouldReadCsv() throws IOException {
         Integer expectedSize = 12;
         List<Book> books = csvReader.readCsv("book-data.csv", Book.class);
+
         assertEquals(expectedSize, books.size());
         assertEquals("The Hunger Games",books.get(0).getTitle());
         assertEquals("Suzanne Collins",books.get(0).getAuthor());
