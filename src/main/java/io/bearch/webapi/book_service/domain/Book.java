@@ -1,6 +1,7 @@
 package io.bearch.webapi.book_service.domain;
 
 import com.opencsv.bean.CsvDate;
+import io.bearch.webapi.book_service.dto.BookDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -43,5 +44,9 @@ public class Book extends AbstractPersistable<UUID> {
 
     @Column(nullable = false)
     private String description;
+
+    public static Book fromBookDto(BookDto bookDto){
+        return new Book(bookDto.getTitle(), bookDto.getAuthor(), bookDto.getPublisher(), LocalDate.parse(bookDto.getPublicationDate()), bookDto.getGenre(), bookDto.getIsbn(), bookDto.getPrice(), bookDto.getDescription());
+    }
 
 }

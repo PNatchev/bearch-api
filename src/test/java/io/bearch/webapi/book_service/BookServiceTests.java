@@ -10,9 +10,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -60,5 +63,39 @@ public class BookServiceTests extends BookBaseTest {
         assertEquals(expectedBook.getPublicationDate().toString(), actualBook.getPublicationDate());
         assertEquals(expectedBook.getPublisher(), actualBook.getPublisher());
         assertEquals(expectedBook.getPrice(), actualBook.getPrice());
+    }
+
+    @Transactional
+    @Test
+    void shouldSaveBook(){
+        Book expectedBook = Book.builder()
+                .title("Friday with Jason")
+                .author("Tom Momoa")
+                .publisher("Cow Intended House")
+                .publicationDate(LocalDate.of(2000, 9, 20))
+                .genre("Thriller")
+                .isbn("9999-0-385-48423-0")
+                .price(16.75)
+                .description("Test description")
+                .build();
+
+        BookDto actualBook = bookService.saveBook(BookDto.fromBook(expectedBook));
+
+        assertEquals(expectedBook.getTitle(), actualBook.getTitle());
+        assertEquals(expectedBook.getAuthor(), actualBook.getAuthor());
+        assertEquals(expectedBook.getPublisher(), actualBook.getPublisher());
+        assertEquals(expectedBook.getPublicationDate().toString(), actualBook.getPublicationDate());
+        assertEquals(expectedBook.getGenre(), actualBook.getGenre());
+        assertEquals(expectedBook.getIsbn(), actualBook.getIsbn());
+        assertEquals(expectedBook.getPrice(), actualBook.getPrice());
+        assertEquals(expectedBook.getDescription(), actualBook.getDescription());
+    }
+
+    @Transactional
+    @Test
+    void shouldThrowError_WhenSavingExistingBook(){
+        assertThrows(EntityExistsException.class, () ->{
+            bookService.saveBook(BookDto.fromBook(book));
+        });
     }
 }
