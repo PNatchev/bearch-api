@@ -11,8 +11,7 @@ import java.sql.Statement;
 
 public class BookBaseTest {
 
-    //H2 Database has a test bug when running test classes. The old data lingers even after being deleted causing NonUnique error to occur
-    //This helps start a new fresh connection
+    //Resets the H2 database after each test class to avoid data persistence
     private static Connection connection;
 
     @BeforeAll

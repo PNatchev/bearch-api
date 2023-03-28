@@ -5,6 +5,8 @@ import io.bearch.webapi.book_service.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +20,11 @@ public class BookController {
 
     @GetMapping()
     public ResponseEntity<BookDto> getBookByIsbn(@RequestParam String isbn){
-         return ResponseEntity.ok(bookService.getBookByISBN(isbn));
+        return ResponseEntity.ok(bookService.getBookByISBN(isbn));
+    }
+
+    @PostMapping()
+    public ResponseEntity<BookDto> saveBook(@RequestBody BookDto bookDto){
+        return ResponseEntity.ok(bookService.saveBook(bookDto));
     }
 }

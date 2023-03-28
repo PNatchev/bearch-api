@@ -2,14 +2,13 @@ package io.bearch.webapi.book_service.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sun.istack.NotNull;
 import io.bearch.webapi.book_service.domain.Book;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
+@Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,7 +24,7 @@ public class BookDto {
     private String publisher;
 
 
-    @JsonProperty("publication_date")
+    @JsonProperty(value = "publication_date", required = true)
     private String publicationDate;
 
     @JsonProperty(required = true)
