@@ -1,6 +1,7 @@
 package io.bearch.webapi.book_service.service;
 
 import io.bearch.webapi.book_service.domain.Book;
+import io.bearch.webapi.book_service.dto.BookDto;
 import io.bearch.webapi.book_service.repository.BookRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,13 +18,13 @@ public class BookServiceImpl implements BookService{
     private final BookRepository bookRepository;
 
     @Override
-    public Book getBookByISBN(String isbn) {
+    public BookDto getBookByISBN(String isbn) {
         Optional<Book> bookOptional = bookRepository.findBookByIsbn(isbn);
         if(bookOptional.isEmpty()){
             throw new NoSuchElementException("Book not found with ISBN: " + isbn);
         }
 
-        return bookOptional.get();
+        return BookDto.fromBook(bookOptional.get());
     }
 
     //todo GetBookByTitle can do this with Moe

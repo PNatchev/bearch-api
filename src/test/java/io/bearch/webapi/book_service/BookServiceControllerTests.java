@@ -1,25 +1,31 @@
 package io.bearch.webapi.book_service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.bearch.webapi.book_service.domain.Book;
 import io.bearch.webapi.book_service.dto.BookDto;
 import io.bearch.webapi.book_service.repository.BookRepository;
-import io.bearch.webapi.book_service.service.BookService;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import javax.transaction.Transactional;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
+@AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class BookServiceTests extends BookBaseTest {
+public class BookServiceControllerTests extends BookBaseTest{
 
     @Autowired
-    private BookService bookService;
+    private MockMvc mvc;
 
     @Autowired
     private BookRepository bookRepository;
@@ -27,7 +33,7 @@ public class BookServiceTests extends BookBaseTest {
     private Book book;
 
     @BeforeAll
-    void setup(){
+    void setup() {
         book = Book.builder()
                 .title("Tuesdays with Morrie")
                 .author("Mitch Albom")
@@ -46,11 +52,20 @@ public class BookServiceTests extends BookBaseTest {
         bookRepository.delete(book);
     }
 
-    @Transactional
     @Test
-    void shouldGetBookByISBN(){
+    void shouldGetBookByISBN_Controller() throws Exception {
         Book expectedBook = book;
-        BookDto actualBook = bookService.getBookByISBN("978-0-385-48451-0");
+
+       MvcResult result = mvc.perform(MockMvcRequestBuilders
+                .get("/api/book")
+                .param("isbn", "978-0-385-48451-0")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+
+       String responseBody = result.getResponse().getContentAsString();
+       ObjectMapper objectMapper = new ObjectMapper();
+       BookDto actualBook = objectMapper.readValue(responseBody, BookDto.class);
 
         assertEquals(expectedBook.getTitle(), actualBook.getTitle());
         assertEquals(expectedBook.getAuthor(), actualBook.getAuthor());

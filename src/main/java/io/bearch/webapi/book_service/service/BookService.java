@@ -1,7 +1,7 @@
 package io.bearch.webapi.book_service.service;
 
-import io.bearch.webapi.book_service.domain.Book;
+import io.bearch.webapi.book_service.dto.BookDto;
 
 public interface BookService {
-    Book getBookByISBN(String isbn);
+    BookDto getBookByISBN(String isbn);
 }
