@@ -13,4 +13,4 @@ Please include a summary of the change and which issue is fixed. Please also inc
 
 ## Additional context
 
-Add any other context about the pull request here.
+Add any other context about the pull request here...
