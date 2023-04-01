@@ -14,8 +14,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -53,7 +54,7 @@ public class BookServiceTests extends BookBaseTest {
     @Test
     void shouldGetBookByISBN(){
         Book expectedBook = book;
-        BookDto actualBook = bookService.getBookByISBN("978-0-385-48451-0");
+        BookDto actualBook = bookService.getBookByISBN(expectedBook.getIsbn());
 
         assertEquals(expectedBook.getTitle(), actualBook.getTitle());
         assertEquals(expectedBook.getAuthor(), actualBook.getAuthor());
@@ -97,5 +98,26 @@ public class BookServiceTests extends BookBaseTest {
         assertThrows(EntityExistsException.class, () ->{
             bookService.saveBook(BookDto.fromBook(book));
         });
+    }
+
+    @Transactional
+    @Test
+    void shouldDeleteBook(){
+        Book expectedBook = Book.builder()
+                .title("Friday with Jason")
+                .author("Tom Momoa")
+                .publisher("Cow Intended House")
+                .publicationDate(LocalDate.of(2000, 9, 20))
+                .genre("Thriller")
+                .isbn("9999-0-385-48423-0")
+                .price(16.75)
+                .description("Test description")
+                .build();
+
+        Book actualBook = bookRepository.save(expectedBook);
+        bookService.deleteBookByISBN(actualBook.getIsbn());
+        Optional<Book> bookOptional = bookRepository.findById(actualBook.getId());
+
+        assertFalse(bookOptional.isPresent());
     }
 }
