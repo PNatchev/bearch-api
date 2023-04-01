@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
+import javax.transaction.Transactional;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -39,6 +40,15 @@ public class BookServiceImpl implements BookService{
         }
     }
 
-    //todo GetBookByTitle can do this with Moe
-    //todo updateBook can do this with Moe
+    @Override
+    public void deleteBookByISBN(String isbn) {
+        Optional<Book> bookOptional =  bookRepository.findBookByIsbn(isbn);
+
+        if(bookOptional.isPresent()){
+           bookRepository.deleteById(bookOptional.get().getId());
+        }
+        else{
+            log.error("No book with isbn: " + isbn + " exists.");
+        }
+    }
 }

@@ -6,10 +6,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.domain.AbstractPersistable;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -18,7 +20,14 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Book extends AbstractPersistable<UUID> {
+public class Book {
+
+    //This setup avoids repeating 0's in H2 DB
+    @Id
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @Column(columnDefinition = "BINARY(16)")
+    private UUID id;
 
     @Column(nullable = false)
     private String title;
@@ -46,7 +55,7 @@ public class Book extends AbstractPersistable<UUID> {
     private String description;
 
     public static Book fromBookDto(BookDto bookDto){
-        return new Book(bookDto.getTitle(), bookDto.getAuthor(), bookDto.getPublisher(), LocalDate.parse(bookDto.getPublicationDate()), bookDto.getGenre(), bookDto.getIsbn(), bookDto.getPrice(), bookDto.getDescription());
+        return new Book(null, bookDto.getTitle(), bookDto.getAuthor(), bookDto.getPublisher(), LocalDate.parse(bookDto.getPublicationDate()), bookDto.getGenre(), bookDto.getIsbn(), bookDto.getPrice(), bookDto.getDescription());
     }
 
 }

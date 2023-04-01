@@ -16,7 +16,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import javax.transaction.Transactional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -113,5 +117,17 @@ public class BookServiceControllerTests extends BookBaseTest{
         assertEquals(expectedBook.getPublicationDate(), actualBook.getPublicationDate());
         assertEquals(expectedBook.getPublisher(), actualBook.getPublisher());
         assertEquals(expectedBook.getPrice(), actualBook.getPrice());
+    }
+
+    @Transactional
+    @Test
+    void shouldDeleteBook() throws Exception {
+        mvc.perform(MockMvcRequestBuilders
+                .delete("/api/book/978-0-385-48451-0")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertFalse(bookRepository.findBookByIsbn(book.getIsbn()).isPresent());
     }
 }
