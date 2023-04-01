@@ -128,6 +128,6 @@ public class BookServiceControllerTests extends BookBaseTest{
                 .andExpect(status().isOk())
                 .andReturn();
 
-        assertFalse(bookRepository.findBookByIsbn("978-0-385-48451-0").isPresent());
+        assertFalse(bookRepository.findBookByIsbn(book.getIsbn()).isPresent());
     }
 }

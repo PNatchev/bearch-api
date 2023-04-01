@@ -1,11 +1,8 @@
 package io.bearch.webapi.book_service;
 
-import io.bearch.webapi.book_service.domain.Book;
 import io.bearch.webapi.book_service.dto.BookDto;
-import io.bearch.webapi.book_service.repository.BookRepository;
 import io.bearch.webapi.book_service.service.BookService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class BookController {
 
     private final BookService bookService;
-    private final BookRepository bookRepository;
 
     @GetMapping()
     public ResponseEntity<BookDto> getBookByIsbn(@RequestParam String isbn){
