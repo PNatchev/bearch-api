@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Order;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class BookBaseTest {
 
@@ -22,9 +21,6 @@ public class BookBaseTest {
     @AfterAll
     @Order(2)
     public static void closeConnection() throws SQLException {
-        Statement statement = connection.createStatement();
-        statement.execute("TRUNCATE TABLE Book");
-        statement.close();
         connection.close();
     }
 }
