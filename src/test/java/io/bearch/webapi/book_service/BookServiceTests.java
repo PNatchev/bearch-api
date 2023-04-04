@@ -4,12 +4,18 @@ import io.bearch.webapi.book_service.domain.Book;
 import io.bearch.webapi.book_service.dto.BookDto;
 import io.bearch.webapi.book_service.repository.BookRepository;
 import io.bearch.webapi.book_service.service.BookService;
+import io.bearch.webapi.config.security.SecurityConfig;
+import io.bearch.webapi.token_service.AuthController;
+import io.bearch.webapi.token_service.TokenService;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+import org.springframework.security.web.SecurityFilterChain;
 
 import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
@@ -21,6 +27,21 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class BookServiceTests extends BookBaseTest {
+
+    @MockBean
+    private AuthController authController;
+
+    @MockBean
+    private TokenService tokenService;
+
+    @MockBean
+    private WebSecurityConfiguration webSecurityConfiguration;
+
+    @MockBean
+    private SecurityConfig securityConfig;
+
+    @MockBean
+    private SecurityFilterChain securityFilterChain;
 
     @Autowired
     private BookService bookService;
