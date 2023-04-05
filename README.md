@@ -37,11 +37,6 @@ Currently, Bearch uses an H2 in-memory database, but it can be easily switch ove
     * password: 
     * url: http://localhost:8080/h2-console
 
-
-* Run Configuration Setup
-
-![img.png](img.png)
-
 # REST Endpoints(Swagger implementation soon)
 ## POST
 `http://localhost:8080/token` Basic Auth: Username = username, Password = password
