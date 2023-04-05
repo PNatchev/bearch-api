@@ -1,6 +1,6 @@
 package io.bearch.webapi.book_service.service;
 
-import io.bearch.webapi.book_service.domain.Book;
+import io.bearch.webapi.book_service.model.Book;
 import io.bearch.webapi.book_service.dto.BookDto;
 import io.bearch.webapi.book_service.repository.BookRepository;
 import lombok.AllArgsConstructor;
