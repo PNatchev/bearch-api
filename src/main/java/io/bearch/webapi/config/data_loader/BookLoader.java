@@ -1,6 +1,6 @@
 package io.bearch.webapi.config.data_loader;
 
-import io.bearch.webapi.book_service.domain.Book;
+import io.bearch.webapi.book_service.model.Book;
 import io.bearch.webapi.book_service.repository.BookRepository;
 import io.bearch.webapi.utility.csv_processor.CsvReader;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package io.bearch.webapi.book_service.domain;
+package io.bearch.webapi.book_service.model;
 
 import com.opencsv.bean.CsvDate;
 import io.bearch.webapi.book_service.dto.BookDto;

@@ -1,6 +1,6 @@
 package io.bearch.webapi.utility;
 
-import io.bearch.webapi.book_service.domain.Book;
+import io.bearch.webapi.book_service.model.Book;
 import io.bearch.webapi.config.security.SecurityConfig;
 import io.bearch.webapi.token_service.AuthController;
 import io.bearch.webapi.token_service.TokenService;

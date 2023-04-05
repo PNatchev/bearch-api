@@ -2,7 +2,7 @@ package io.bearch.webapi.book_service.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.bearch.webapi.book_service.domain.Book;
+import io.bearch.webapi.book_service.model.Book;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

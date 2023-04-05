@@ -1,7 +1,7 @@
 package io.bearch.webapi.book_service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.bearch.webapi.book_service.domain.Book;
+import io.bearch.webapi.book_service.model.Book;
 import io.bearch.webapi.book_service.dto.BookDto;
 import io.bearch.webapi.book_service.repository.BookRepository;
 import io.bearch.webapi.config.security.SecurityConfig;
