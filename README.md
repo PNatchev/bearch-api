@@ -1,12 +1,12 @@
 # Bearch = Book + Search
 
-##Bearch API
+## Bearch API
 Bearch is a book search API that provides developers with a scalable solution for building book search functionality into their applications. By leveraging modern system development practices and implementing backing services such as Rate Limiting, Message Queuing, Caching, etc. Bearch's development end goal would for it to be a microservices architecture that can handle large volumes of queries.
 
-##About Bearch
+## About Bearch
 Bearch was born out of a desire to improve my development skills outside of my regular work hours. As a developer, I wanted to create a project that would challenge me to apply modern development practices in a practical and meaningful way. By creating an API for book search functionality, I saw an opportunity to own most or all of the features and really dive into developing them the best way I saw fit.
 
-##Getting Started
+## Getting Started
 Currently, Bearch uses an H2 in-memory database, but it can be easily switch over to a stateful relational database such as PostgreSQL
 
 * Clone repository
@@ -43,7 +43,7 @@ Currently, Bearch uses an H2 in-memory database, but it can be easily switch ove
 ![img.png](img.png)
 
 # REST Endpoints(Swagger implementation soon)
-##POST
+## POST
 `http://localhost:8080/token` Basic Auth: Username = username, Password = password
 
 
@@ -51,11 +51,11 @@ Currently, Bearch uses an H2 in-memory database, but it can be easily switch ove
 
 Use json formatted Request Body from `src/main/java/io/bearch/webapi/book_service/dto/BookDto.java`
 
-##GET
+## GET
 `http://localhost:8080/api/book?isbn=9780439023481` Bearer Token: Use the generated token from `/token`
 
 
-##DELETE
+## DELETE
 `http://localhost:8080/api/book/9780439023481` Bearer Token: Use generated token from `/token`
 
 
