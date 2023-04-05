@@ -1,31 +1,61 @@
-# Read Me First
-test
-The following was discovered as part of building this project:
+# Bearch = Book + Search
 
-* The JVM level was changed from '11' to '17', review
-  the [JDK Version Range](https://github.com/spring-projects/spring-framework/wiki/Spring-Framework-Versions#jdk-version-range)
-  on the wiki for more details.
+##Bearch API
+Bearch is a book search API that provides developers with a scalable solution for building book search functionality into their applications. By leveraging modern system development practices and implementing backing services such as Rate Limiting, Message Queuing, Caching, etc. Bearch's development end goal would for it to be a microservices architecture that can handle large volumes of queries.
 
-# Getting Started
-sdfsd
-### Reference Documentation
+##About Bearch
+Bearch was born out of a desire to improve my development skills outside of my regular work hours. As a developer, I wanted to create a project that would challenge me to apply modern development practices in a practical and meaningful way. By creating an API for book search functionality, I saw an opportunity to own most or all of the features and really dive into developing them the best way I saw fit.
 
-For further reference, please consider the following sections:
+##Getting Started
+Currently, Bearch uses an H2 in-memory database, but it can be easily switch over to a stateful relational database such as PostgreSQL
 
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/3.0.5/maven-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/3.0.5/maven-plugin/reference/html/#build-image)
-* [Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/3.0.5/reference/htmlsingle/#actuator)
-* [Spring Web](https://docs.spring.io/spring-boot/docs/3.0.5/reference/htmlsingle/#web)
-* [Spring Data JPA](https://docs.spring.io/spring-boot/docs/3.0.5/reference/htmlsingle/#data.sql.jpa-and-spring-data)
+* Clone repository
+* Setup OpenSSL
+  * Download -> [OpenSSL](https://slproweb.com/products/Win32OpenSSL.html)
+  * Environment variable setup -> [Click Here](https://www.stechies.com/installing-openssl-windows-10-11/)
+  * Run in cmd: `openssl version` 
+  
 
-### Guides
+* Create RSA private/public token
+    * `openssl genrsa -out keypair.pem 2048`
+    * `openssl rsa -in keypair.pem -pubout -out public.pem`
+    * `openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out private.pem`
+    * Can delete keypair.pem
+    * Rename files to have json extension and place somewhere safely on your local drive.
 
-The following guides illustrate how to use some features concretely:
 
-* [Building a RESTful Web Service with Spring Boot Actuator](https://spring.io/guides/gs/actuator-service/)
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/rest/)
-* [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
+    
+* Setup local environment variables in IDE(I use IntelliJ)
+  * `RSA_PRIVATE=file:///D:/SDE/OpenSSL/bearchAuth/private.json`
+  * `RSA_PUBLIC=file:///D:/SDE/OpenSSL/bearchAuth/public.json`
+  * `AUTH_USER=username`
+  * `AUTH_PASSWORD=password`
+
+
+* DB Credentials
+    * username: sa
+    * password: 
+    * url: http://localhost:8080/h2-console
+
+
+* Run Configuration Setup
+
+![img.png](img.png)
+
+# REST Endpoints(Swagger implementation soon)
+##POST
+`http://localhost:8080/token` Basic Auth: Username = username, Password = password
+
+
+`http://localhost:8080/api/book` Bearer Token: Use the generated token from `/token`
+
+Use json formatted Request Body from `src/main/java/io/bearch/webapi/book_service/dto/BookDto.java`
+
+##GET
+`http://localhost:8080/api/book?isbn=9780439023481` Bearer Token: Use the generated token from `/token`
+
+
+##DELETE
+`http://localhost:8080/api/book/9780439023481` Bearer Token: Use generated token from `/token`
+
 
