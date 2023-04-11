@@ -8,8 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @AllArgsConstructor
@@ -49,5 +52,17 @@ public class BookServiceImpl implements BookService{
         else{
             log.error("No book with isbn: " + isbn + " exists.");
         }
+    }
+
+    @Override
+    public List<BookDto> getBooksByAuthorName(String authorName) {
+        List<Book> bookList = bookRepository.findBooksByAuthor(authorName);
+        if(bookList.isEmpty()){
+            throw new NoSuchElementException("No books found by author name: " + authorName);
+        }
+        List<BookDto> returnBookList = new ArrayList<>();
+        bookList.stream().map(book -> returnBookList.add(BookDto.fromBook(book))).collect(Collectors.toList());
+
+        return returnBookList;
     }
 }
