@@ -20,6 +20,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -50,6 +51,7 @@ public class BookServiceTests extends BookBaseTest {
     private BookRepository bookRepository;
 
     private Book book;
+    private Book book2;
 
     @BeforeAll
     void setup(){
@@ -64,11 +66,24 @@ public class BookServiceTests extends BookBaseTest {
                 .description("Example description of Mitch Albom")
                 .build();
         book = bookRepository.save(book);
+
+        book2 = Book.builder()
+                .title("Wednesdays with Morrie")
+                .author("Mitch Albom")
+                .publisher("Penguin Random House")
+                .publicationDate(LocalDate.of(1997, 8, 18))
+                .genre("Self-Help")
+                .isbn("978-0-385-48451-2")
+                .price(14.95)
+                .description("Example description of Mitch Albom")
+                .build();
+        book2 = bookRepository.save(book2);
     }
 
     @AfterAll
     void tearDown(){
         bookRepository.delete(book);
+        bookRepository.delete(book2);
     }
 
     @Transactional
@@ -140,5 +155,26 @@ public class BookServiceTests extends BookBaseTest {
         Optional<Book> bookOptional = bookRepository.findById(actualBook.getId());
 
         assertFalse(bookOptional.isPresent());
+    }
+
+    @Transactional
+    @Test
+    void shouldGetBooksByAuthorName(){
+       List<BookDto> actualBookList =  bookService.getBooksByAuthorName("Mitch Albom");
+
+        assertEquals(2, actualBookList.size());
+        assertEquals(book.getTitle(), actualBookList.get(0).getTitle());
+        assertEquals(book2.getTitle(), actualBookList.get(1).getTitle());
+        assertEquals(book.getAuthor(), actualBookList.get(0).getAuthor());
+        assertEquals(book2.getAuthor(), actualBookList.get(1).getAuthor());
+        assertEquals(book.getGenre(), actualBookList.get(0).getGenre());
+        assertEquals(book2.getGenre(), actualBookList.get(1).getGenre());
+        assertEquals(book.getDescription(), actualBookList.get(0).getDescription());
+        assertEquals(book2.getDescription(), actualBookList.get(1).getDescription());
+        assertEquals(book.getPublisher(), actualBookList.get(0).getPublisher());
+        assertEquals(book2.getPublisher(), actualBookList.get(1).getPublisher());
+        assertEquals(book.getPrice(), actualBookList.get(0).getPrice());
+        assertEquals(book2.getPrice(), actualBookList.get(1).getPrice());
+
     }
 }
