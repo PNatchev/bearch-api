@@ -47,7 +47,7 @@ Currently, Bearch uses an H2 in-memory database, but it can be easily switch ove
 Use json formatted Request Body from `src/main/java/io/bearch/webapi/book_service/dto/BookDto.java`
 
 ## GET
-`http://localhost:8080/api/book?isbn=9780439023481` Bearer Token: Use the generated token from `/token`
+`http://localhost:8080/api/book/9780439023481` Bearer Token: Use the generated token from `/token`
 
 
 ## DELETE

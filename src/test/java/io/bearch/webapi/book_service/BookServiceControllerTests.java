@@ -1,5 +1,6 @@
 package io.bearch.webapi.book_service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.bearch.webapi.book_service.model.Book;
 import io.bearch.webapi.book_service.dto.BookDto;
@@ -20,6 +21,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -80,11 +83,10 @@ public class BookServiceControllerTests extends BookBaseTest{
 
     @Test
     void shouldGetBookByISBN_Controller() throws Exception {
-        Book expectedBook = book;
+       Book expectedBook = book;
 
        MvcResult result = mvc.perform(MockMvcRequestBuilders
-                .get("/api/book")
-                .param("isbn", "978-0-385-48451-0")
+                .get("/api/book/978-0-385-48451-0")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -150,5 +152,31 @@ public class BookServiceControllerTests extends BookBaseTest{
                 .andReturn();
 
         assertFalse(bookRepository.findBookByIsbn(book.getIsbn()).isPresent());
+    }
+
+    @Transactional
+    @Test
+    void shouldGetBooksByAuthorName() throws Exception {
+        Book expectedBook = book;
+
+        MvcResult result = mvc.perform(MockMvcRequestBuilders
+                        .get("/api/book/author")
+                        .param("authorName", "Mitch")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String responseBody = result.getResponse().getContentAsString();
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<BookDto> actualBook = objectMapper.readValue(responseBody, new TypeReference<>() {});
+
+        assertEquals(expectedBook.getTitle(), actualBook.get(0).getTitle());
+        assertEquals(expectedBook.getAuthor(), actualBook.get(0).getAuthor());
+        assertEquals(expectedBook.getIsbn(), actualBook.get(0).getIsbn());
+        assertEquals(expectedBook.getGenre(), actualBook.get(0).getGenre());
+        assertEquals(expectedBook.getDescription(), actualBook.get(0).getDescription());
+        assertEquals(expectedBook.getPublicationDate().toString(), actualBook.get(0).getPublicationDate());
+        assertEquals(expectedBook.getPublisher(), actualBook.get(0).getPublisher());
+        assertEquals(expectedBook.getPrice(), actualBook.get(0).getPrice());
     }
 }

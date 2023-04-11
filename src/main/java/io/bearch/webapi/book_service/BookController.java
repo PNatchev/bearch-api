@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/book")
 public class BookController {
@@ -24,9 +26,14 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @GetMapping()
-    public ResponseEntity<BookDto> getBookByIsbn(@RequestParam String isbn){
+    @GetMapping("/{isbn}")
+    public ResponseEntity<BookDto> getBookByIsbn(@PathVariable String isbn){
         return ResponseEntity.ok(bookService.getBookByISBN(isbn));
+    }
+
+    @GetMapping("/author")
+    public ResponseEntity<List<BookDto>> getBooksByAuthorName(@RequestParam String authorName){
+        return ResponseEntity.ok(bookService.getBooksByAuthorName(authorName));
     }
 
     @PostMapping()
